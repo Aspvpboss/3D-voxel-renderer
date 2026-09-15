@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
-find_package(glm REQUIRED)
 
 # Wildcard for all .cpp files in src/ (CONFIGURE_DEPENDS detects added/removed files)
 set(SOURCES
