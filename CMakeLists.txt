@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.13)
+project(OpenGLApp LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Find OpenGL
+find_package(OpenGL REQUIRED)
+find_package(glfw3 REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(glm REQUIRED)
+
+# Wildcard for all .cpp files in src/ (CONFIGURE_DEPENDS detects added/removed files)
+set(SOURCES
+    src/main.cpp 
+)
+
+
+add_executable(OpenGLApp ${SOURCES})
+
+# Link OpenGL (note: you'll also want GLFW, SDL2, or GLAD for a window/context)
+target_link_libraries(OpenGLApp PRIVATE 
+    OpenGL::GL
+    glfw
+    GLEW::GLEW
+    glm::glm
+)
+
+# Ensure the executable outputs directly into the build root folder
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
