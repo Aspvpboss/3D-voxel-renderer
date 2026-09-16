@@ -36,7 +36,7 @@ Program::~Program(){
 void Program::loop(){
 
     while(!glfwWindowShouldClose(window)){
-        if(renderer.render()); throw std::runtime_error("failed to render a frame"); 
+        if(renderer.render()) throw std::runtime_error("failed to render a frame"); 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

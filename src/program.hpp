@@ -1,8 +1,8 @@
 #ifndef PROGRAM_HPP
 #define PROGRAM_HPP
 
-#include <GLFW/glfw3.h>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <stdexcept>
 
 #include "renderer.hpp"
