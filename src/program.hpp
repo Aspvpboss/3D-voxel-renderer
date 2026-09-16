@@ -1,22 +1,22 @@
 #ifndef PROGRAM_HPP
 #define PROGRAM_HPP
 
-#include <GL/gl.h>
 #include <GLFW/glfw3.h>
+#include <GL/glew.h>
 #include <stdexcept>
 
-#include "display.hpp"
+#include "renderer.hpp"
 
 class Program {
 
     public:
         GLFWwindow *window = nullptr;
+        Renderer renderer;
         Program(int width, int height, const char *window_title);
         ~Program();
         void loop();
 
     private:
-        void display();
 
 };
 

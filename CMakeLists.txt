@@ -13,7 +13,7 @@ find_package(GLEW REQUIRED)
 set(SOURCES
     src/main.cpp 
     src/program.cpp
-    src/display.cpp
+    src/renderer.cpp
 )
 
 
