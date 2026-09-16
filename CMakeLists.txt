@@ -12,10 +12,14 @@ find_package(GLEW REQUIRED)
 # Wildcard for all .cpp files in src/ (CONFIGURE_DEPENDS detects added/removed files)
 set(SOURCES
     src/main.cpp 
+    src/program.cpp
+    src/display.cpp
 )
 
 
 add_executable(OpenGLApp ${SOURCES})
+target_include_directories(OpenGLApp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 
 # Link OpenGL (note: you'll also want GLFW, SDL2, or GLAD for a window/context)
 target_link_libraries(OpenGLApp PRIVATE 
