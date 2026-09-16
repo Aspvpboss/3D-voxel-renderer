@@ -22,7 +22,6 @@ target_link_libraries(OpenGLApp PRIVATE
     OpenGL::GL
     glfw
     GLEW::GLEW
-    glm::glm
 )
 
 # Ensure the executable outputs directly into the build root folder
