@@ -14,6 +14,7 @@ set(SOURCES
     src/main.cpp 
     src/program.cpp
     src/renderer.cpp
+    src/math.cpp
 )
 
 
