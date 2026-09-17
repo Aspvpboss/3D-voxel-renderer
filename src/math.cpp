@@ -1,8 +1,11 @@
 #include "math.hpp"
 #include <mem.h>
+#include <iostream>
 
 mat4::mat4(float x){
-    memset(data, x, sizeof(data));
+    for(int i = 0; i < 16; i++){
+        data[i] = x;
+    }
 }
 
 mat4::mat4(float x1, float x2, float x3, float x4,
@@ -16,6 +19,27 @@ mat4::mat4(float x1, float x2, float x3, float x4,
     data[12] = x13; data[13] = x14; data[14] = x15; data[15] = x16;
 }
 
+void mat4::print(){
+
+    for(int y = 0; y < 4; y++){
+        for(int x = 0; x < 4; x++){
+            std::cout << data[y * 4 + x] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+mat4 mat4::operator*(const mat4& other) const{
+    mat4 result(0);
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            for(int k = 0; k < 4; k++){
+                result.data[i * 4 + j] += data[i * 4 + k] * other.data[k * 4 + j];
+            }
+        }
+    }
+    return result;
+}
 
 vec3::vec3(float xyz){
     vec3::x = xyz;
