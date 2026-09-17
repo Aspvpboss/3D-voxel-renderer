@@ -36,7 +36,7 @@ Program::~Program(){
 void Program::loop(){
 
     mat4 test(1.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.5f, 1.0f,
+            0.0f, 0.0f, 0.5f, 1.0f,
             0.5f, 1.0f, 0.2f, 1.0f,
             0.8f, 0.2f, 0.3f, 0.4f);
     test.print();
