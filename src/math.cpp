@@ -20,16 +20,16 @@ mat4::mat4(float x1, float x2, float x3, float x4,
     data[12] = x13; data[13] = x14; data[14] = x15; data[15] = x16;
 }
 
-mat4::mat4(float x1, float x2, float x3, float x4,
-    float x5, float x6, float x7, float x8, 
-    float x9, float x10, float x11, float x12, 
-    float x13, float x14, float x15, float x16){
+// mat4::mat4(float x1, float x2, float x3, float x4,
+//     float x5, float x6, float x7, float x8, 
+//     float x9, float x10, float x11, float x12, 
+//     float x13, float x14, float x15, float x16){
 
-    data[0] = x1; data[1] = x2; data[2] = x3; data[3] = x4;
-    data[4] = x5; data[5] = x6; data[6] = x7; data[7] = x8;
-    data[8] = x9; data[9] = x10; data[10] = x11; data[11] = x12;
-    data[12] = x13; data[13] = x14; data[14] = x15; data[15] = x16;            
-}
+//     data[0] = x1; data[1] = x2; data[2] = x3; data[3] = x4;
+//     data[4] = x5; data[5] = x6; data[6] = x7; data[7] = x8;
+//     data[8] = x9; data[9] = x10; data[10] = x11; data[11] = x12;
+//     data[12] = x13; data[13] = x14; data[14] = x15; data[15] = x16;            
+// }
 
 void mat4::print(){
 
