@@ -48,6 +48,26 @@ mat4 mat4::operator*(const mat4& other) const {
     return result;
 }
 
+vec3 operator*(const mat4& m, const vec3& v) {
+    float implicit_w = 1.0f;
+    
+    float out_x = m.data[0] * v.x + m.data[4] * v.y + m.data[8] * v.z  + m.data[12] * implicit_w;
+    float out_y = m.data[1] * v.x + m.data[5] * v.y + m.data[9] * v.z  + m.data[13] * implicit_w;
+    float out_z = m.data[2] * v.x + m.data[6] * v.y + m.data[10] * v.z + m.data[14] * implicit_w;
+    
+    return vec3(out_x, out_y, out_z);
+}
+
+vec3 vec3::operator*(const vec3& other) const{
+    return vec3(this->x * other.x, this->y * other.y, this->z * other.z);
+}
+vec3 vec3::operator+(const vec3& other) const{
+    return vec3(this->x + other.x, this->y + other.y, this->z + other.z);
+}
+vec3 vec3::operator-(const vec3& other) const{
+    return vec3(this->x - other.x, this->y - other.y, this->z - other.z);
+}
+
 vec3::vec3(float xyz){
     vec3::x = xyz;
     vec3::y = xyz;
@@ -60,10 +80,11 @@ vec3::vec3(float x, float y, float z){
     vec3::z = z;
 }
 
-
-vec3 vec3::operator*(const vec3& other) const{
-    return vec3(this->x * other.x, this->y * other.y, this->z * other.z);
+void vec3::print(){
+    std::cout << "vec3(" << x << ", " << y << ", " << z << ")" << std::endl;
 }
+
+
 
 float math::radians(float degrees){
     return (degrees * math::PI_FLOAT) / 180.0f;

@@ -23,8 +23,12 @@ class vec3 {
         
         vec3(float xyz);
         vec3(float x, float y, float z);
+        void print();
 
         vec3 operator*(const vec3& other) const;
+        vec3 operator+(const vec3& other) const;
+        vec3 operator-(const vec3& other) const;
+        friend vec3 operator*(const mat4& m, const vec3& v);
 };
 
 namespace math {

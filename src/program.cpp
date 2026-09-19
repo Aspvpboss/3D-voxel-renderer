@@ -35,11 +35,12 @@ Program::~Program(){
 
 void Program::loop(){
 
-    mat4 test(1.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.5f, 1.0f,
-            0.5f, 1.0f, 0.2f, 1.0f,
-            0.8f, 0.2f, 0.3f, 0.4f);
-    test.print();
+    vec3 testVec(1.0f, 2.0f, 3.0f);
+    mat4 testMat = math::translate(mat4(1.0f), vec3(2.0f));
+
+    testVec = testMat * testVec;
+
+    testVec.print();
 
     while(!glfwWindowShouldClose(window)){
         if(renderer.render()) throw std::runtime_error("failed to render a frame"); 
