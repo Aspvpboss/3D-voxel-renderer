@@ -3,11 +3,6 @@
 #include <iostream>
 #include <cmath>
 
-mat4::mat4(float x){
-    for(int i = 0; i < 16; i++){
-        data[i] = x;
-    }
-}
 
 mat4::mat4(float x1, float x2, float x3, float x4,
     float x5, float x6, float x7, float x8, 
@@ -20,34 +15,34 @@ mat4::mat4(float x1, float x2, float x3, float x4,
     data[12] = x13; data[13] = x14; data[14] = x15; data[15] = x16;
 }
 
-// mat4::mat4(float x1, float x2, float x3, float x4,
-//     float x5, float x6, float x7, float x8, 
-//     float x9, float x10, float x11, float x12, 
-//     float x13, float x14, float x15, float x16){
+mat4::mat4(float x){
+    data[0] = x; data[1] = 0.0f; data[2] = 0.0f; data[3] = 0.0f;
+    data[4] = 0.0f; data[5] = x; data[6] = 0.0f; data[7] = 0.0f;
+    data[8] = 0.0f; data[9] = 0.0f; data[10] = x; data[11] = 0.0f;
+    data[12] = 0.0f; data[13] = 0.0f; data[14] = 0.0f; data[15] = x;
+}
 
-//     data[0] = x1; data[1] = x2; data[2] = x3; data[3] = x4;
-//     data[4] = x5; data[5] = x6; data[6] = x7; data[7] = x8;
-//     data[8] = x9; data[9] = x10; data[10] = x11; data[11] = x12;
-//     data[12] = x13; data[13] = x14; data[14] = x15; data[15] = x16;            
-// }
+
 
 void mat4::print(){
 
-    for(int y = 0; y < 4; y++){
-        for(int x = 0; x < 4; x++){
-            std::cout << data[y * 4 + x] << " ";
+    for(int row = 0; row < 4; row++){
+        for(int col = 0; col < 4; col++){
+            std::cout << data[col * 4 + row] << " ";
         }
         std::cout << std::endl;
     }
 }
 
-mat4 mat4::operator*(const mat4& other) const{
-    mat4 result(0);
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 4; j++){
-            for(int k = 0; k < 4; k++){
-                result.data[i * 4 + j] += data[i * 4 + k] * other.data[k * 4 + j];
+mat4 mat4::operator*(const mat4& other) const {
+    mat4 result(0.0f);
+    for(int col = 0; col < 4; col++) {
+        for(int row = 0; row < 4; row++) {
+            float sum = 0.0f;
+            for(int k = 0; k < 4; k++) {
+                sum += this->data[k * 4 + row] * other.data[col * 4 + k];
             }
+            result.data[col * 4 + row] = sum;
         }
     }
     return result;
@@ -77,6 +72,19 @@ float math::radians(float degrees){
 float math::degrees(float radians){
     return (radians * 180) / math::PI_FLOAT;
 }
+
+
+mat4 math::perspective(float fovy_degrees, float aspect, float near, float far){
+
+    float tanHalffovy = tanf(math::radians(fovy_degrees) / 2.0f);
+    mat4 perp(1 / ((aspect * tanHalffovy)), 0, 0, 0,
+            0, 1 / tanHalffovy, 0, 0,
+            0, 0, -(far+near) / (far-near), -1,
+            0, 0, -(2.0f * (far * near) / (far-near)), 0);
+
+    return perp;
+}
+
 
 mat4 math::translate(const mat4& base, const vec3& offset){
 
