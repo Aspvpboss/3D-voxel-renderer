@@ -100,8 +100,8 @@ mat4 math::perspective(float fovy_degrees, float aspect, float near, float far){
     float tanHalffovy = tanf(math::radians(fovy_degrees) / 2.0f);
     mat4 perp(1 / ((aspect * tanHalffovy)), 0, 0, 0,
             0, 1 / tanHalffovy, 0, 0,
-            0, 0, -(far+near) / (far-near), -1,
-            0, 0, -(2.0f * (far * near) / (far-near)), 0);
+            0, 0, (far+near) / (far-near), 2 * (far* near) / (near - far),
+            0, 0, -1, 0);
 
     return perp;
 }
