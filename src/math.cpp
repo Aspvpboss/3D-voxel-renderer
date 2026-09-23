@@ -4,15 +4,16 @@
 #include <cmath>
 
 
-mat4::mat4(float x1, float x2, float x3, float x4,
-    float x5, float x6, float x7, float x8, 
-    float x9, float x10, float x11, float x12, 
-    float x13, float x14, float x15, float x16){
+mat4::mat4(float x00, float x01, float x02, float x03,
+           float x10, float x11, float x12, float x13, 
+           float x20, float x21, float x22, float x23, 
+           float x30, float x31, float x32, float x33){
 
-    data[0] = x1; data[1] = x2; data[2] = x3; data[3] = x4;
-    data[4] = x5; data[5] = x6; data[6] = x7; data[7] = x8;
-    data[8] = x9; data[9] = x10; data[10] = x11; data[11] = x12;
-    data[12] = x13; data[13] = x14; data[14] = x15; data[15] = x16;
+    data[0] = x00; data[4] = x01; data[8]  = x02; data[12] = x03;
+    data[1] = x10; data[5] = x11; data[9]  = x12; data[13] = x13;
+    data[2] = x20; data[6] = x21; data[10] = x22; data[14] = x23;
+    data[3] = x30; data[7] = x31; data[11] = x32; data[15] = x33;
+
 }
 
 mat4::mat4(float x){
@@ -100,7 +101,7 @@ mat4 math::perspective(float fovy_degrees, float aspect, float near, float far){
     float tanHalffovy = tanf(math::radians(fovy_degrees) / 2.0f);
     mat4 perp(1 / ((aspect * tanHalffovy)), 0, 0, 0,
             0, 1 / tanHalffovy, 0, 0,
-            0, 0, (far+near) / (far-near), 2 * (far* near) / (near - far),
+            0, 0, (far + near) / (near - far), 2 * (far * near) / (near - far),
             0, 0, -1, 0);
 
     return perp;
