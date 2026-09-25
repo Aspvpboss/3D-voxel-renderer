@@ -2,15 +2,16 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <stdexcept>
+#include <format>
 
-std::string readShaderFile(const char *filePath) 
-{
+std::string readShaderFile(const char *filePath){
+
 	std::string content;
 
 	std::ifstream fileStream(filePath, std::ios::in);
-	if (!fileStream.is_open())
-	{
-		throw "Unable to open file.";
+	if (!fileStream.is_open()){
+		throw std::runtime_error(std::format("Tried to open the shader %s but failed", filePath));
 	}
 	std::string line = "";
 	while (!fileStream.eof()) 
@@ -22,6 +23,12 @@ std::string readShaderFile(const char *filePath)
 	return content;
 }
 
+
+GLuint compileShader(GLenum shader_type, const char *filePath){
+
+
+
+}
 
 
 Renderer::Renderer(){
