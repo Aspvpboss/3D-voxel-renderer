@@ -5,6 +5,10 @@
 #include <GLFW/glfw3.h>
 #include "math.hpp"
 
+#define NUM_VBOS 10
+#define NUM_VAOS 10
+#define NUM_RPS 1
+
 class Renderer {
 
     public:
@@ -15,6 +19,11 @@ class Renderer {
         int bindWindow(GLFWwindow *window_to_bind);
         int render();
 
+    private:
+        GLuint vbo[NUM_VBOS];
+        GLuint vao[NUM_VAOS];
+        GLuint renderingPrograms[NUM_RPS];
+        GLuint pMat = NULL; GLuint mMat = NULL;
 };
 
 #endif
