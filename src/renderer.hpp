@@ -23,7 +23,7 @@ class Renderer {
         GLuint vbo[NUM_VBOS];
         GLuint vao[NUM_VAOS];
         GLuint renderingPrograms[NUM_RPS];
-        GLuint pMat = NULL; GLuint mMat = NULL;
+        GLuint pMat = 0; GLuint mMat = 0;
 };
 
 #endif
