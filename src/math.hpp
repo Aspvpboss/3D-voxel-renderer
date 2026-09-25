@@ -37,6 +37,8 @@ namespace math {
     float radians(float degrees);
     float degrees(float radians);
     
+    float dot(vec3 v1, vec3 v2);
+    
     mat4 perspective(float fovy_degrees, float aspect, float near, float far);
     mat4 translate(const mat4& base, const vec3& offset);
     mat4 rotationX(const mat4& base, float radians);

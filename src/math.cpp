@@ -96,6 +96,11 @@ float math::degrees(float radians){
 }
 
 
+float math::dot(const vec3& v1, const vec3& v2){
+    return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+}
+
+
 mat4 math::perspective(float fovy_degrees, float aspect, float near, float far){
 
     float tanHalffovy = tanf(math::radians(fovy_degrees) / 2.0f);
