@@ -1,9 +1,9 @@
-#include "renderer.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <stdexcept>
 #include <format>
+#include "renderer.hpp"
 
 std::string readShaderFile(const char *filePath){
 
@@ -24,9 +24,18 @@ std::string readShaderFile(const char *filePath){
 }
 
 
-GLuint compileShader(GLenum shader_type, const char *filePath){
+void compileShader(GLuint rendering_program, GLenum shader_type, const char *filePath){
 
-
+	try{
+		GLuint shader = glCreateShader(shader_type);
+		const char *shader_src = readShaderFile(filePath).c_str();
+		glShaderSource(shader, 1, &shader_src, NULL);
+		glCompileShader(shader);
+		glAttachShader(rendering_program, shader);
+	}
+	catch(const std::exception& e){
+		throw;
+	}	
 
 }
 
@@ -34,7 +43,7 @@ GLuint compileShader(GLenum shader_type, const char *filePath){
 Renderer::Renderer(){
 
     const char *files[] = {"test.glsl", "fragment.glsl"};
-	std::cout << readShaderFile(files[0]) << std::endl;	
+	
 
 }
 
