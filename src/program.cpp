@@ -32,12 +32,12 @@ Program::Program(int width, int height, const char *window_title){
     if(!glfwInit()) 
         throw std::runtime_error("glfw3 failed to initialize");
 
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     window = glfwCreateWindow(width, height, window_title, NULL, NULL);
     if(!window) 
         throw std::runtime_error("glfw3 window failed to create");
 
     glfwSetWindowSizeCallback(window, window_reshape_callback);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
   
     glfwMakeContextCurrent(window);
    
@@ -57,7 +57,10 @@ Program::Program(int width, int height, const char *window_title){
 
     renderer->bindWindow(window);
 
-    camera = std::make_unique<Camera>(); 
+    camera = std::make_unique<Camera>();
+    camera->bindWindow(window);
+    camera->updatePerspectiveMatrix(70.0f, 0.1f, 1000.0f);
+    camera->cameraY = 1.0f; 
 }
 
 Program::~Program(){
@@ -79,9 +82,11 @@ void Program::loop(){
     testVec.print();
 
     while(!glfwWindowShouldClose(window)){
+        camera->HandleMovement();
         if(renderer->render(camera)) throw std::runtime_error("failed to render a frame"); 
         glfwSwapBuffers(window);
         glfwPollEvents();
+
     }
 
 }

@@ -7,10 +7,10 @@ class mat4 {
     public:
         mat4();
         mat4(float x);
-        mat4(float x00, float x01, float x02, float x03,
-             float x10, float x11, float x12, float x13, 
-             float x20, float x21, float x22, float x23, 
-             float x30, float x31, float x32, float x33);
+        mat4(float x00, float x10, float x20, float x30,  
+             float x01, float x11, float x21, float x31,  
+             float x02, float x12, float x22, float x32,  
+             float x03, float x13, float x23, float x33);
 
         void print();
         

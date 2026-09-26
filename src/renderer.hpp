@@ -25,7 +25,7 @@ class Renderer {
         GLuint vbo[NUM_VBOS] = {0};
         GLuint vao[NUM_VAOS] = {0};
         GLuint renderingPrograms[NUM_RPS] = {0};
-        GLuint pMat = 0; GLuint mMat = 0;
+        GLuint pMatloc = 0; GLuint mMatloc = 0;
 };
 
 #endif

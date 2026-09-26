@@ -1,5 +1,6 @@
 #include "camera.hpp"
 #include <cmath>
+#include <iostream>
 
 Camera::Camera(){
 
@@ -141,6 +142,8 @@ float limit_angle(float angle, float limit){
     return angle;
 }
 
+
+
 void Camera::HandleMovement(){
 
 	if (glfwGetKey(binded_window, camera_keybinds[ROTATE_UP]) == GLFW_PRESS){
@@ -209,4 +212,7 @@ void Camera::HandleMovement(){
     cameraX += (cameraXvec * cameraSpeed);
     cameraY += (cameraYvec * cameraSpeed);
     cameraZ += (cameraZvec * cameraSpeed);
+
 }
+
+

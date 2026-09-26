@@ -5,22 +5,21 @@
 
 
 mat4::mat4(){
-    data[0] = 0.0f; data[1] = 0.0f; data[2] = 0.0f; data[3] = 0.0f;
-    data[4] = 0.0f; data[5] = 0.0f; data[6] = 0.0f; data[7] = 0.0f;
-    data[8] = 0.0f; data[9] = 0.0f; data[10] = 0.0f; data[11] = 0.0f;
-    data[12] = 0.0f; data[13] = 0.0f; data[14] = 0.0f; data[15] = 0.0f;
+    data[0] = 1.0f; data[1] = 0.0f; data[2] = 0.0f; data[3] = 0.0f;
+    data[4] = 0.0f; data[5] = 1.0f; data[6] = 0.0f; data[7] = 0.0f;
+    data[8] = 0.0f; data[9] = 0.0f; data[10] = 1.0f; data[11] = 0.0f;
+    data[12] = 0.0f; data[13] = 0.0f; data[14] = 0.0f; data[15] = 1.0f;
 }
 
-mat4::mat4(float x00, float x01, float x02, float x03,
-           float x10, float x11, float x12, float x13, 
-           float x20, float x21, float x22, float x23, 
-           float x30, float x31, float x32, float x33){
+mat4::mat4(float x00, float x10, float x20, float x30,  
+           float x01, float x11, float x21, float x31,  
+           float x02, float x12, float x22, float x32,  
+           float x03, float x13, float x23, float x33){
 
     data[0] = x00; data[4] = x01; data[8]  = x02; data[12] = x03;
     data[1] = x10; data[5] = x11; data[9]  = x12; data[13] = x13;
     data[2] = x20; data[6] = x21; data[10] = x22; data[14] = x23;
     data[3] = x30; data[7] = x31; data[11] = x32; data[15] = x33;
-
 }
 
 mat4::mat4(float x){
@@ -161,50 +160,53 @@ float math::dot(const vec3& v1, const vec3& v2){
 
 
 mat4 math::perspective(float fovy_degrees, float aspect, float near, float far){
-
     float tanHalffovy = tanf(math::radians(fovy_degrees) / 2.0f);
-    mat4 perp(1 / ((aspect * tanHalffovy)), 0, 0, 0,
-            0, 1 / tanHalffovy, 0, 0,
-            0, 0, (far + near) / (near - far), 2 * (far * near) / (near - far),
-            0, 0, -1, 0);
-
+    
+    mat4 perp(
+        1.0f / (aspect * tanHalffovy), 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f / tanHalffovy, 0.0f, 0.0f,
+        0.0f, 0.0f, (far + near) / (near - far), -1.0f,
+        0.0f, 0.0f, 2.0f * (far * near) / (near - far), 0.0f
+    );
     return perp;
 }
 
-
 mat4 math::translate(const mat4& base, const vec3& offset){
-
-    mat4 trans(1.0f, 0.0f, 0.0f, offset.x,
-               0.0f, 1.0f, 0.0f, offset.y,
-               0.0f, 0.0f, 1.0f, offset.z,
-               0.0f, 0.0f, 0.0f, 1.0f);
-
+    mat4 trans(
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        offset.x, offset.y, offset.z, 1.0f
+    );
     return base * trans;
 }
 
 mat4 math::rotationX(const mat4& base, float radians){
-    mat4 trans(1, 0.0f, 0.0f, 0.0f,
-               0.0f, cosf(radians), -sinf(radians), 0.0f,
-               0.0f, sinf(radians), cosf(radians), 0.0f,
-               0.0f, 0.0f, 0.0f, 1.0f);
-    
+    mat4 trans(
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, cosf(radians), sinf(radians), 0.0f,
+        0.0f, -sinf(radians), cosf(radians), 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    );
     return base * trans;
 }
 
 mat4 math::rotationY(const mat4& base, float radians){
-    mat4 trans(cosf(radians), 0.0f, sinf(radians), 0,
-               0.0f, 1.0f, 0.0f, 0,
-               -sinf(radians), 0.0f, cosf(radians), 0,
-               0.0f, 0.0f, 0.0f, 1.0f);
-    
+    mat4 trans(
+        cosf(radians), 0.0f, -sinf(radians), 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        sinf(radians), 0.0f, cosf(radians), 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    );
     return base * trans;
 }
 
 mat4 math::rotationZ(const mat4& base, float radians){
-    mat4 trans(cosf(radians), -sinf(radians), 0.0f, 0.0f,
-               sinf(radians), cosf(radians), 0.0f, 0.0f,
-               0.0f, 0.0f, 1.0f, 0.0f,
-               0.0f, 0.0f, 0.0f, 1.0f);
-    
+    mat4 trans(
+        cosf(radians), sinf(radians), 0.0f, 0.0f,
+        -sinf(radians), cosf(radians), 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    );
     return base * trans;
 }
