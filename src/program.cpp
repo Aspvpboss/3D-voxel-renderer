@@ -60,7 +60,8 @@ Program::Program(int width, int height, const char *window_title){
     camera = std::make_unique<Camera>();
     camera->bindWindow(window);
     camera->updatePerspectiveMatrix(70.0f, 0.1f, 1000.0f);
-    camera->cameraY = 1.0f; 
+    camera->cameraY = 1.0f;
+    camera->cameraSpeed = 0.03f; 
 }
 
 Program::~Program(){
@@ -74,13 +75,6 @@ Program::~Program(){
 
 void Program::loop(){
 
-    vec3 testVec(1.0f, 2.0f, 3.0f);
-    mat4 testMat = math::translate(mat4(1.0f), vec3(2.0f));
-
-    testVec = testMat * testVec;
-
-    testVec.print();
-
     while(!glfwWindowShouldClose(window)){
         camera->HandleMovement();
         if(renderer->render(camera)) throw std::runtime_error("failed to render a frame"); 
@@ -90,9 +84,3 @@ void Program::loop(){
     }
 
 }
-
-
-
-
-
-

@@ -52,7 +52,7 @@ bool Camera::updatePerspectiveMatrix(float fovy, float near, float far){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(fovy, aspect, near, far);
 
 	return true;
 }
