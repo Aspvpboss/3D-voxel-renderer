@@ -5,6 +5,22 @@
 #include <format>
 #include "renderer.hpp"
 
+const static float VOXEL_VERTEXES[] ={
+	-1.0f,  1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f, 1.0f,  1.0f, -1.0f, -1.0f,  1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f, 1.0f, -1.0f,  1.0f, 1.0f,  1.0f, -1.0f,
+	1.0f, -1.0f,  1.0f, 1.0f,  1.0f,  1.0f, 1.0f,  1.0f, -1.0f,
+	1.0f, -1.0f,  1.0f, -1.0f, -1.0f,  1.0f, 1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f, -1.0f,  1.0f,  1.0f, 1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f, -1.0f, -1.0f, -1.0f, -1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f, -1.0f, -1.0f,  1.0f, -1.0f, -1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,  1.0f, -1.0f,  1.0f,  1.0f, -1.0f, -1.0f,
+	1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f, 1.0f,  1.0f, -1.0f, 1.0f,  1.0f,  1.0f,
+	1.0f,  1.0f,  1.0f, -1.0f,  1.0f,  1.0f, -1.0f,  1.0f, -1.0f
+};
+
+
 std::string readShaderFile(const char *filePath){
 
 	std::string content;
@@ -56,6 +72,10 @@ Renderer::Renderer(){
 
 	glGenVertexArrays(NUM_VAOS, vao);
 	glBindVertexArray(vao[0]);
+	glGenBuffers(NUM_VBOS, vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VOXEL_VERTEXES), VOXEL_VERTEXES, GL_STATIC_DRAW);
 }
 
 
@@ -78,6 +98,9 @@ int Renderer::render(){
 	GLuint active_program = renderingPrograms[0];
 
 	glUseProgram(active_program);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	
     return 0;

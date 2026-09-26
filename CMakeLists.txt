@@ -15,6 +15,7 @@ set(SOURCES
     src/program.cpp
     src/renderer.cpp
     src/math.cpp
+    src/camera.cpp
 )
 
 
