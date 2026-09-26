@@ -11,7 +11,7 @@ std::string readShaderFile(const char *filePath){
 
 	std::ifstream fileStream(filePath, std::ios::in);
 	if (!fileStream.is_open()){
-		throw std::runtime_error(std::format("Tried to open the shader %s but failed", filePath));
+		throw std::runtime_error(std::format("Tried to open the shader {} but failed", filePath));
 	}
 	std::string line = "";
 	while (!fileStream.eof()) 
@@ -28,8 +28,9 @@ void compileShader(GLuint rendering_program, GLenum shader_type, const char *fil
 
 	try{
 		GLuint shader = glCreateShader(shader_type);
-		const char *shader_src = readShaderFile(filePath).c_str();
-		glShaderSource(shader, 1, &shader_src, NULL);
+		std::string shaderString = readShaderFile(filePath).c_str();
+		const char *shaderSrc = shaderString.c_str();
+		glShaderSource(shader, 1, &shaderSrc, NULL);
 		glCompileShader(shader);
 		glAttachShader(rendering_program, shader);
 	}
@@ -42,14 +43,26 @@ void compileShader(GLuint rendering_program, GLenum shader_type, const char *fil
 
 Renderer::Renderer(){
 
-    const char *files[] = {"test.glsl", "fragment.glsl"};
-	
+	renderingPrograms[0] = glCreateProgram();
+	try{
+		compileShader(renderingPrograms[0], GL_FRAGMENT_SHADER, "assets/shaders/frag.glsl");
+		compileShader(renderingPrograms[0], GL_VERTEX_SHADER, "assets/shaders/vertex.glsl");
+		glLinkProgram(renderingPrograms[0]);
+	}	
+	catch(const std::exception& e){
+		throw;
+	}
 
+
+	glGenVertexArrays(NUM_VAOS, vao);
+	glBindVertexArray(vao[0]);
 }
 
 
 Renderer::~Renderer(){
-
+	for(GLuint program: renderingPrograms){
+		if(program) glDeleteProgram(program);
+	}
 }
 
 int Renderer::bindWindow(GLFWwindow *window_to_bind){
@@ -62,5 +75,10 @@ int Renderer::bindWindow(GLFWwindow *window_to_bind){
 int Renderer::render(){
     glClear(GL_COLOR_BUFFER_BIT);
 
+	GLuint active_program = renderingPrograms[0];
+
+	glUseProgram(active_program);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	
     return 0;
 }
