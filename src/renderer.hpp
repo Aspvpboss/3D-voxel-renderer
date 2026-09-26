@@ -3,7 +3,9 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <memory>
 #include "math.hpp"
+#include "camera.hpp"
 
 #define NUM_VBOS 10
 #define NUM_VAOS 10
@@ -17,7 +19,7 @@ class Renderer {
         Renderer();
         ~Renderer();
         int bindWindow(GLFWwindow *window_to_bind);
-        int render();
+        int render(const std::unique_ptr<Camera>& camera);
 
     private:
         GLuint vbo[NUM_VBOS] = {0};

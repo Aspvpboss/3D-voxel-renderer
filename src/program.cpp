@@ -25,6 +25,8 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
     }
 }
 
+
+
 Program::Program(int width, int height, const char *window_title){
 
     if(!glfwInit()) 
@@ -54,6 +56,8 @@ Program::Program(int width, int height, const char *window_title){
     }
 
     renderer->bindWindow(window);
+
+    camera = std::make_unique<Camera>(); 
 }
 
 Program::~Program(){
@@ -75,7 +79,7 @@ void Program::loop(){
     testVec.print();
 
     while(!glfwWindowShouldClose(window)){
-        if(renderer->render()) throw std::runtime_error("failed to render a frame"); 
+        if(renderer->render(camera)) throw std::runtime_error("failed to render a frame"); 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

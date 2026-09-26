@@ -1,9 +1,7 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <GLFW/glfw3.h>
+#include "math.hpp"
 
 class Camera {
 
@@ -33,8 +31,8 @@ class Camera {
         Camera();
         ~Camera();
         void HandleMovement();
-        glm::mat4 buildCameraMatrix();
-        const glm::mat4& getPerspectiveMatrix();
+        mat4 buildCameraMatrix();
+        const mat4& getPerspectiveMatrix();
         bool updatePerspectiveMatrix(float fovy, float near, float far);
         bool updatePerspectiveMatrix(float fovy);
         bool updatePerspectiveMatrix();
@@ -47,7 +45,7 @@ class Camera {
         float aspect = 0.0f; float fovy = 0.0f; float near = 0.0f; float far = 0.0f;
         
         GLFWwindow *binded_window = nullptr;
-        glm::mat4 perspectiveMat;
+        mat4 perspectiveMat;
         
-        glm::mat4 buildLookAt();
+        mat4 buildLookAt();
 };

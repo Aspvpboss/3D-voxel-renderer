@@ -4,6 +4,13 @@
 #include <cmath>
 
 
+mat4::mat4(){
+    data[0] = 0.0f; data[1] = 0.0f; data[2] = 0.0f; data[3] = 0.0f;
+    data[4] = 0.0f; data[5] = 0.0f; data[6] = 0.0f; data[7] = 0.0f;
+    data[8] = 0.0f; data[9] = 0.0f; data[10] = 0.0f; data[11] = 0.0f;
+    data[12] = 0.0f; data[13] = 0.0f; data[14] = 0.0f; data[15] = 0.0f;
+}
+
 mat4::mat4(float x00, float x01, float x02, float x03,
            float x10, float x11, float x12, float x13, 
            float x20, float x21, float x22, float x23, 
@@ -69,6 +76,12 @@ vec3 vec3::operator-(const vec3& other) const{
     return vec3(this->x - other.x, this->y - other.y, this->z - other.z);
 }
 
+vec3::vec3(){
+    vec3::x = 0.0f;
+    vec3::y = 0.0f;
+    vec3::z = 0.0f;
+}
+
 vec3::vec3(float xyz){
     vec3::x = xyz;
     vec3::y = xyz;
@@ -81,10 +94,56 @@ vec3::vec3(float x, float y, float z){
     vec3::z = z;
 }
 
+vec3 vec3::normalize() const{
+    float len = std::sqrt(x * x + y * y + z * z);
+    if(len != 0.0f){
+        return vec3(x / len, y / len, z / len);
+    }
+    return *this;
+}
+
 void vec3::print(){
     std::cout << "vec3(" << x << ", " << y << ", " << z << ")" << std::endl;
 }
 
+vec2::vec2(){
+    vec2::x = 0.0f;
+    vec2::y = 0.0f;
+}
+
+vec2::vec2(float xy){
+    vec2::x = xy;
+    vec2::y = xy;
+}
+
+vec2::vec2(float x, float y){
+    vec2::x = x;
+    vec2::y = y;
+}
+
+void vec2::print(){
+    std::cout << "vec2(" << x << ", " << y << ")" << std::endl;
+}
+
+vec2 vec2::operator*(const vec2& other) const{
+    return vec2(this->x * other.x, this->y * other.y);
+}
+
+vec2 vec2::operator+(const vec2& other) const{
+    return vec2(this->x + other.x, this->y + other.y);
+}
+
+vec2 vec2::operator-(const vec2& other) const{
+    return vec2(this->x - other.x, this->y - other.y);
+}
+
+vec2 vec2::normalize() const{
+    float len = std::sqrt(x * x + y * y);
+    if(len != 0.0f){
+        return vec2(x / len, y / len);
+    }
+    return *this;
+}
 
 
 float math::radians(float degrees){

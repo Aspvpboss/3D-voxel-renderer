@@ -92,7 +92,8 @@ int Renderer::bindWindow(GLFWwindow *window_to_bind){
     return 0;
 }
 
-int Renderer::render(){
+int Renderer::render(const std::unique_ptr<Camera>& camera){
+    glClear(GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
 
 	GLuint active_program = renderingPrograms[0];

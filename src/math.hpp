@@ -5,6 +5,7 @@
 
 class mat4 {
     public:
+        mat4();
         mat4(float x);
         mat4(float x00, float x01, float x02, float x03,
              float x10, float x11, float x12, float x13, 
@@ -21,6 +22,7 @@ class vec3 {
     public:
         float x = 0, y = 0, z = 0;
         
+        vec3();
         vec3(float xyz);
         vec3(float x, float y, float z);
         void print();
@@ -28,7 +30,24 @@ class vec3 {
         vec3 operator*(const vec3& other) const;
         vec3 operator+(const vec3& other) const;
         vec3 operator-(const vec3& other) const;
+        vec3 normalize() const;
         friend vec3 operator*(const mat4& m, const vec3& v);
+};
+
+class vec2 {
+    public:
+        float x = 0, y = 0;
+        
+        vec2();
+        vec2(float xy);
+        vec2(float x, float y);
+        void print();
+
+        vec2 operator*(const vec2& other) const;
+        vec2 operator+(const vec2& other) const;
+        vec2 operator-(const vec2& other) const;
+        
+        vec2 normalize() const;
 };
 
 namespace math {

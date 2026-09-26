@@ -1,5 +1,5 @@
-#include "camera.h"
-
+#include "camera.hpp"
+#include <cmath>
 
 Camera::Camera(){
 
@@ -51,7 +51,7 @@ bool Camera::updatePerspectiveMatrix(float fovy, float near, float far){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = glm::perspective(glm::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
 
 	return true;
 }
@@ -68,7 +68,7 @@ bool Camera::updatePerspectiveMatrix(float near, float far){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = glm::perspective(glm::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
 	
 	return true;
 }
@@ -84,7 +84,7 @@ bool Camera::updatePerspectiveMatrix(float fovy){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = glm::perspective(glm::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
 	
 	return true;
 }
@@ -92,38 +92,38 @@ bool Camera::updatePerspectiveMatrix(){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = glm::perspective(glm::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
 	
 	return true;
 }
 
 
-const glm::mat4& Camera::getPerspectiveMatrix(){
+const mat4& Camera::getPerspectiveMatrix(){
 	return perspectiveMat;
 }
 
 
-glm::mat4 Camera::buildCameraMatrix(){
-    auto vMat = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraX, -cameraY, -cameraZ));
+mat4 Camera::buildCameraMatrix(){
+    auto vMat = math::translate(mat4(1.0f), vec3(-cameraX, -cameraY, -cameraZ));
     auto rotMat = buildLookAt();
 
     return rotMat * vMat;
 }
 
 
-glm::mat4 Camera::buildLookAt(){
-    glm::mat4 rotationMatrix = glm::mat4(1.0f);
-    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(cameraXrot), glm::vec3(1.0f, 0.0f, 0.0f)); // pitch
-    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(cameraZrot), glm::vec3(0.0f, 0.0f, 1.0f)); // roll
-    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(cameraYrot), glm::vec3(0.0f, 1.0f, 0.0f)); // yaw
+mat4 Camera::buildLookAt(){
+    mat4 rotationMatrix = mat4(1.0f);
+    rotationMatrix = math::rotationX(rotationMatrix, math::radians(cameraXrot)); // pitch
+    rotationMatrix = math::rotationZ(rotationMatrix, math::radians(cameraZrot)); // roll
+    rotationMatrix = math::rotationY(rotationMatrix, math::radians(cameraYrot)); // yaw
 
     return rotationMatrix;
 }
 
-glm::vec2 angle_to_vectors(float degrees){
+vec2 angle_to_vectors(float degrees){
 
-	glm::vec2 vec;
-	float radians = glm::radians(degrees);
+	vec2 vec;
+	float radians = math::radians(degrees);
 
 	vec.x = cos(radians);
 	vec.y = sin(radians);
