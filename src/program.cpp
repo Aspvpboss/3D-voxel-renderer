@@ -4,7 +4,7 @@
 
 void window_reshape_callback(GLFWwindow *window, int newWidth, int newHeight){
     glViewport(0, 0, newWidth, newHeight);
-    
+
     Program* program = static_cast<Program*>(glfwGetWindowUserPointer(window));
     program->camera->updatePerspectiveMatrix();
 }
@@ -62,11 +62,9 @@ Program::Program(int width, int height, const char *window_title){
 
     renderer->bindWindow(window);
 
-    camera = std::make_unique<Camera>();
+    camera = std::make_unique<Camera>(vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), 5.0f, 150.0f);
     camera->bindWindow(window);
-    camera->updatePerspectiveMatrix(70.0f, 0.1f, 1000.0f);
-    camera->cameraY = 1.0f;
-    camera->cameraSpeed = 0.03f; 
+    camera->updatePerspectiveMatrix(95.0f, 0.1f, 1000.0f);
 }
 
 Program::~Program(){
@@ -80,12 +78,16 @@ Program::~Program(){
 
 void Program::loop(){
 
+    double lastFrame = 0.0;
     while(!glfwWindowShouldClose(window)){
-        camera->HandleMovement();
+        double currentFrame = glfwGetTime();
+        double dt = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+       
+        camera->HandleMovement(dt);
         if(renderer->render(camera)) throw std::runtime_error("failed to render a frame"); 
         glfwSwapBuffers(window);
         glfwPollEvents();
-
     }
 
 }

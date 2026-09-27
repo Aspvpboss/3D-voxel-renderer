@@ -25,12 +25,12 @@ class Camera {
 
         float cameraXrot = 0.0f, cameraYrot = 0.0f, cameraZrot = 0.0f;
         float cameraX = 0.0f, cameraY = 0.0f, cameraZ = 0.0f;
-        float cameraSpeed = 1.0f;
-        float rotationSpeed = 1.0f;
+        float cameraSpeed = 0.0f;
+        float rotationSpeed = 0.0f;
 
-        Camera();
+        Camera(vec3 position, vec3 rotation, float cameraSpeed, float rotationSpeed);
         ~Camera();
-        void HandleMovement();
+        void HandleMovement(float dt);
         mat4 buildCameraMatrix();
         const mat4& getPerspectiveMatrix();
         bool updatePerspectiveMatrix(float fovy, float near, float far);
