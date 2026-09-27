@@ -69,7 +69,7 @@ bool Camera::updatePerspectiveMatrix(float near, float far){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(fovy, aspect, near, far);
 	
 	return true;
 }
@@ -85,7 +85,7 @@ bool Camera::updatePerspectiveMatrix(float fovy){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(fovy, aspect, near, far);
 	
 	return true;
 }
@@ -93,7 +93,7 @@ bool Camera::updatePerspectiveMatrix(){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(fovy, aspect, near, far);
 	
 	return true;
 }

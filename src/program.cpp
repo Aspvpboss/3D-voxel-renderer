@@ -1,8 +1,12 @@
 #include "program.hpp"
 #include <iostream>
 
+
 void window_reshape_callback(GLFWwindow *window, int newWidth, int newHeight){
-	glViewport(0, 0, newWidth, newHeight);
+    glViewport(0, 0, newWidth, newHeight);
+    
+    Program* program = static_cast<Program*>(glfwGetWindowUserPointer(window));
+    program->camera->updatePerspectiveMatrix();
 }
 
 void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
@@ -37,10 +41,11 @@ Program::Program(int width, int height, const char *window_title){
     if(!window) 
         throw std::runtime_error("glfw3 window failed to create");
 
+    glfwSetWindowUserPointer(window, this);
     glfwSetWindowSizeCallback(window, window_reshape_callback);
-  
     glfwMakeContextCurrent(window);
-   
+  
+    
     if(glewInit() != GLEW_OK) 
         throw std::runtime_error("glew failed to initilize");
     
