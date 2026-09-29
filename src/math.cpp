@@ -101,6 +101,7 @@ vec3 vec3::normalize() const{
     return *this;
 }
 
+
 void vec3::print(){
     std::cout << "vec3(" << x << ", " << y << ", " << z << ")" << std::endl;
 }
@@ -219,3 +220,4 @@ mat4 math::rotationXYZ(const mat4& base, const vec3& rotation_degrees){
    
     return base * matrix;
 }
+

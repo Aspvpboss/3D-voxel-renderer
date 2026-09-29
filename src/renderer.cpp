@@ -78,7 +78,8 @@ const static float VOXEL_NORMALS[] = {
 };
 
 vec3 lightLoc(0.0f, 0.0f, 0.0f);
-vec3 cubeLoc(3.0f, -2.0f, -8.0f);
+vec3 lightColor(1.0f, 1.0f, 1.0f);
+vec3 cubeLoc(0.0f, 0.0f, -8.0f);
 vec3 cubeRotation(45.0f, 0.0f, 45.0f);
 GLuint cubeTex;
 
@@ -174,8 +175,26 @@ Renderer::Renderer(){
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VOXEL_VERTEXES), VOXEL_VERTEXES, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VOXEL_UVS), VOXEL_UVS, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VOXEL_NORMALS), VOXEL_NORMALS, GL_STATIC_DRAW);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(2);
+	
+	glBindVertexArray(0);
+	
+	perpMatloc = glGetUniformLocation(renderingPrograms[0], "proj_matrix");
+	modelMatloc = glGetUniformLocation(renderingPrograms[0], "model_matrix");
+	viewMatloc = glGetUniformLocation(renderingPrograms[0], "view_matrix");
+	lightPosloc = glGetUniformLocation(renderingPrograms[0], "lightPos");
+	lightColorloc = glGetUniformLocation(renderingPrograms[0], "lightColor");
 
 }
 
@@ -201,35 +220,28 @@ int Renderer::render(const std::unique_ptr<Camera>& camera){
 
 	glUseProgram(renderingPrograms[0]);
 
-	perpMatloc = glGetUniformLocation(renderingPrograms[0], "proj_matrix");
-	modelMatloc = glGetUniformLocation(renderingPrograms[0], "model_matrix");
-	viewMatloc = glGetUniformLocation(renderingPrograms[0], "view_matrix");
-
 	mat4 perpMat = camera->getPerspectiveMatrix();
 	mat4 viewMat = camera->buildCameraMatrix();
 
 	mat4 modelMat = math::translate(mat4(1.0f), cubeLoc) * math::rotationXYZ(mat4(1.0f), cubeRotation);
+	
 
 	glUniformMatrix4fv(perpMatloc, 1, GL_FALSE, &perpMat.data[0]);
 	glUniformMatrix4fv(modelMatloc, 1, GL_FALSE, &modelMat.data[0]);
 	glUniformMatrix4fv(viewMatloc, 1, GL_FALSE, &viewMat.data[0]);
+	glUniform3fv(lightPosloc, 1, &lightLoc.x);
+	glUniform3fv(lightColorloc, 1, &lightColor.x);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
+	glBindVertexArray(vao[0]);
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cubeTex);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
-	glCullFace(GL_BACK);
+	// glEnable(GL_DEPTH_TEST);
+	// glDepthFunc(GL_LEQUAL);
+	// glEnable(GL_CULL_FACE);
+	// glFrontFace(GL_CW);
+	// glCullFace(GL_BACK);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	
     return 0;

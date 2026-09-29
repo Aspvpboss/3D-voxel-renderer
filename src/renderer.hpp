@@ -26,6 +26,7 @@ class Renderer {
         GLuint vao[NUM_VAOS] = {0};
         GLuint renderingPrograms[NUM_RPS] = {0};
         GLuint perpMatloc = 0; GLuint modelMatloc = 0; GLuint viewMatloc = 0;
+        GLuint lightPosloc = 0; GLuint lightColorloc = 0;
 };
 
 #endif
