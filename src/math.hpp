@@ -63,7 +63,7 @@ namespace math {
     mat4 rotationX(const mat4& base, float radians);
     mat4 rotationY(const mat4& base, float radians);
     mat4 rotationZ(const mat4& base, float radians);
-    
-};
+    mat4 rotationXYZ(const mat4& base, vec3 rotation);
 
+}
 #endif

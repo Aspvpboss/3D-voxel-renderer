@@ -77,7 +77,9 @@ const static float VOXEL_NORMALS[] = {
      0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f
 };
 
+vec3 lightLoc(0.0f, 0.0f, 0.0f);
 vec3 cubeLoc(3.0f, -2.0f, -8.0f);
+vec3 cubeRotation(10.0f, -10.0f, -10.0f);
 GLuint cubeTex;
 
 GLuint loadTexture(const char *textImagePath){
@@ -199,16 +201,18 @@ int Renderer::render(const std::unique_ptr<Camera>& camera){
 
 	glUseProgram(renderingPrograms[0]);
 
-	pMatloc = glGetUniformLocation(renderingPrograms[0], "proj_matrix");
-	mMatloc = glGetUniformLocation(renderingPrograms[0], "mv_matrix");
+	perpMatloc = glGetUniformLocation(renderingPrograms[0], "proj_matrix");
+	modelMatloc = glGetUniformLocation(renderingPrograms[0], "mv_matrix");
+	viewMatloc = glGetUniformLocation(renderingPrograms[0], "view_matrix");
 
-	mat4 pMat = camera->getPerspectiveMatrix();
-	mat4 cMat = camera->buildCameraMatrix();
+	mat4 perpMat = camera->getPerspectiveMatrix();
+	mat4 viewMat = camera->buildCameraMatrix();
 
-	mat4 mMat = cMat * math::translate(mat4(1.0f), cubeLoc);
+	mat4 modelMat = math::translate(mat4(1.0f), cubeLoc) * math::rotationXYZ(mat4(1.0f), cubeRotation);
 
-	glUniformMatrix4fv(pMatloc, 1, GL_FALSE, &pMat.data[0]);
-	glUniformMatrix4fv(mMatloc, 1, GL_FALSE, &mMat.data[0]);
+	glUniformMatrix4fv(perpMatloc, 1, GL_FALSE, &perpMat.data[0]);
+	glUniformMatrix4fv(modelMatloc, 1, GL_FALSE, &modelMat.data[0]);
+	glUniformMatrix4fv(viewMatloc, 1, GL_FALSE, &viewMat.data[0]);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
