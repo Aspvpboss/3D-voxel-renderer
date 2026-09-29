@@ -2,7 +2,16 @@
 #include <cmath>
 #include <iostream>
 
-Camera::Camera(){
+Camera::Camera(vec3 position, vec3 rotation, float cameraSpeed, float rotationSpeed){
+
+	Camera::cameraX = position.x;
+	Camera::cameraY = position.y;
+	Camera::cameraZ = position.z;
+	Camera::cameraXrot = rotation.x;
+	Camera::cameraYrot = rotation.y;
+	Camera::cameraZrot = rotation.z;
+	Camera::cameraSpeed = cameraSpeed;
+	Camera::rotationSpeed = rotationSpeed;
 
     camera_keybinds[MOVE_FORWARD] = GLFW_KEY_W; 
     camera_keybinds[MOVE_BACKWARD] = GLFW_KEY_S; 
@@ -69,7 +78,7 @@ bool Camera::updatePerspectiveMatrix(float near, float far){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(fovy, aspect, near, far);
 	
 	return true;
 }
@@ -85,7 +94,7 @@ bool Camera::updatePerspectiveMatrix(float fovy){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(fovy, aspect, near, far);
 	
 	return true;
 }
@@ -93,7 +102,7 @@ bool Camera::updatePerspectiveMatrix(){
 	glfwGetFramebufferSize(binded_window, &buf_width, &buf_height);
 	float aspect = (float)buf_width / (float)buf_height;
 	Camera::aspect = aspect;
-	perspectiveMat = math::perspective(math::radians(fovy), aspect, near, far);
+	perspectiveMat = math::perspective(fovy, aspect, near, far);
 	
 	return true;
 }
@@ -144,25 +153,25 @@ float limit_angle(float angle, float limit){
 
 
 
-void Camera::HandleMovement(){
+void Camera::HandleMovement(float dt){
 
 	if (glfwGetKey(binded_window, camera_keybinds[ROTATE_UP]) == GLFW_PRESS){
-		cameraXrot -= rotationSpeed;
+		cameraXrot -= rotationSpeed * dt;
 	}
 	if (glfwGetKey(binded_window, camera_keybinds[ROTATE_DOWN]) == GLFW_PRESS){
-		cameraXrot += rotationSpeed;
+		cameraXrot += rotationSpeed * dt;
 	}
 	if (glfwGetKey(binded_window, camera_keybinds[ROTATE_RIGHT]) == GLFW_PRESS){
-		cameraYrot += rotationSpeed;
+		cameraYrot += rotationSpeed * dt;
 	}
 	if (glfwGetKey(binded_window, camera_keybinds[ROTATE_LEFT]) == GLFW_PRESS){
-		cameraYrot -= rotationSpeed;
+		cameraYrot -= rotationSpeed * dt;
 	}
 	if (glfwGetKey(binded_window, camera_keybinds[ROTATE_ROLL_RIGHT]) == GLFW_PRESS){
-		cameraZrot += rotationSpeed;
+		cameraZrot += rotationSpeed * dt;
 	}
 	if (glfwGetKey(binded_window, camera_keybinds[ROTATE_ROLL_LEFT]) == GLFW_PRESS){
-		cameraZrot -= rotationSpeed;
+		cameraZrot -= rotationSpeed * dt;
 	}
 
     cameraXrot = limit_angle(cameraXrot, 90);
@@ -209,9 +218,9 @@ void Camera::HandleMovement(){
     cameraYvec /= magnitude;
     cameraZvec /= magnitude;
 
-    cameraX += (cameraXvec * cameraSpeed);
-    cameraY += (cameraYvec * cameraSpeed);
-    cameraZ += (cameraZvec * cameraSpeed);
+    cameraX += (cameraXvec * cameraSpeed * dt);
+    cameraY += (cameraYvec * cameraSpeed * dt);
+    cameraZ += (cameraZvec * cameraSpeed * dt);
 
 }
 
