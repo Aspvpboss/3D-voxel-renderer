@@ -1,11 +1,10 @@
 #version 430
 
 out vec4 color;
-uniform mat4 mv_matrix;
-uniform mat4 proj_matrix;
-in vec4 varyingColor;
+uniform sampler2D samp;
+in vec2 tc;
 
 void main(void)
 {
-	color = varyingColor;
+	color = texture(samp, tc);
 }

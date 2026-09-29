@@ -1,3 +1,4 @@
+#include <SOIL2/SOIL2.h>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -20,7 +21,7 @@ const static float VOXEL_VERTEXES[] ={
 
 	-1.0f, -1.0f,  1.0f,  1.0f, -1.0f,  1.0f,  1.0f, -1.0f, -1.0f,
 	1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f,  1.0f,
-	
+
 	-1.0f,  1.0f, -1.0f, 1.0f,  1.0f, -1.0f, 1.0f,  1.0f,  1.0f,
 	1.0f,  1.0f,  1.0f, -1.0f,  1.0f,  1.0f, -1.0f,  1.0f, -1.0f
 };
@@ -53,6 +54,30 @@ const static float VOXEL_UVS[] = {
 
 
 vec3 cubeLoc(3.0f, -2.0f, -8.0f);
+GLuint cubeTex;
+
+GLuint loadTexture(const char *textImagePath){
+
+	GLuint textureID;
+	textureID = SOIL_load_OGL_texture(textImagePath, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	if(textureID == 0) throw std::runtime_error(std::format("Tried to open the texture {} but failed", textImagePath));
+	// Bind it once to configure it
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    
+    // Set parameters and generate mipmaps HERE
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 	
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+	if(glewIsSupported("GL_EXT_texture_filter_anisotropic")){
+		GLfloat anisoSetting = 0.0f;	
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisoSetting);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisoSetting);
+	}
+	
+	return textureID;
+}
 
 std::string readShaderFile(const char *filePath){
 
@@ -111,20 +136,20 @@ Renderer::Renderer(){
 		compileShader(renderingPrograms[0], GL_FRAGMENT_SHADER, "assets/shaders/frag.glsl");
 		compileShader(renderingPrograms[0], GL_VERTEX_SHADER, "assets/shaders/vertex.glsl");
 		glLinkProgram(renderingPrograms[0]);
+		cubeTex = loadTexture("assets/textures/dirt.jpg");
 	}	
 	catch(const std::exception& e){
 		throw;
 	}
 
-
-	glGenVertexArrays(NUM_VAOS, vao);
+	glGenVertexArrays(1, vao);
 	glBindVertexArray(vao[0]);
 	glGenBuffers(NUM_VBOS, vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VOXEL_VERTEXES), VOXEL_VERTEXES, GL_STATIC_DRAW);
-	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	// glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VOXEL_UVS), VOXEL_UVS, GL_STATIC_DRAW);
 
 }
 
@@ -133,6 +158,8 @@ Renderer::~Renderer(){
 	for(GLuint program: renderingPrograms){
 		if(program) glDeleteProgram(program);
 	}
+	glDeleteVertexArrays(1, vao);
+	glDeleteBuffers(NUM_VBOS, vbo);
 }
 
 int Renderer::bindWindow(GLFWwindow *window_to_bind){
@@ -163,8 +190,18 @@ int Renderer::render(const std::unique_ptr<Camera>& camera){
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
 
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, cubeTex);
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glCullFace(GL_BACK);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	
     return 0;

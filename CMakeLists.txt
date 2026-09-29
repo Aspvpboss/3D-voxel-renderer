@@ -28,6 +28,7 @@ target_link_libraries(OpenGLApp PRIVATE
     OpenGL::GL
     glfw
     GLEW::GLEW
+    soil2-debug
 )
 
 # Ensure the executable outputs directly into the build root folder

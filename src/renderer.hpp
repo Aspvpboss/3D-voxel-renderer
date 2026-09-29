@@ -7,8 +7,8 @@
 #include "math.hpp"
 #include "camera.hpp"
 
-#define NUM_VBOS 10
-#define NUM_VAOS 10
+#define NUM_VBOS 2
+#define NUM_VAOS 20
 #define NUM_RPS 1
 
 class Renderer {
