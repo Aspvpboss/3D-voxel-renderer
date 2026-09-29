@@ -9,6 +9,6 @@ uniform mat4 proj_matrix;
 out vec2 tc;
 
 void main(void) {
-    gl_Position = proj_matrix * view_matrix * view_matrix * vec4(position, 1.0);
+    gl_Position = proj_matrix * view_matrix * model_matrix * vec4(position, 1.0);
     tc = texPos;
 }

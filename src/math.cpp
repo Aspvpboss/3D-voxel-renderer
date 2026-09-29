@@ -211,11 +211,11 @@ mat4 math::rotationZ(const mat4& base, float radians){
     return base * trans;
 }
 
-mat4 math::rotationXYZ(const mat4& base, vec3 rotation_degrees){
+mat4 math::rotationXYZ(const mat4& base, const vec3& rotation_degrees){
     mat4 matrix = mat4(1.0f);
     matrix = math::rotationX(matrix, math::radians(rotation_degrees.x));
-    matrix = math::rotationX(matrix, math::radians(rotation_degrees.y));
-    matrix = math::rotationX(matrix, math::radians(rotation_degrees.z));
+    matrix = math::rotationY(matrix, math::radians(rotation_degrees.y));
+    matrix = math::rotationZ(matrix, math::radians(rotation_degrees.z));
    
     return base * matrix;
 }

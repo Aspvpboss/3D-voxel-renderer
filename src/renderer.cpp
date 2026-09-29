@@ -79,7 +79,7 @@ const static float VOXEL_NORMALS[] = {
 
 vec3 lightLoc(0.0f, 0.0f, 0.0f);
 vec3 cubeLoc(3.0f, -2.0f, -8.0f);
-vec3 cubeRotation(10.0f, -10.0f, -10.0f);
+vec3 cubeRotation(45.0f, 0.0f, 45.0f);
 GLuint cubeTex;
 
 GLuint loadTexture(const char *textImagePath){
@@ -202,7 +202,7 @@ int Renderer::render(const std::unique_ptr<Camera>& camera){
 	glUseProgram(renderingPrograms[0]);
 
 	perpMatloc = glGetUniformLocation(renderingPrograms[0], "proj_matrix");
-	modelMatloc = glGetUniformLocation(renderingPrograms[0], "mv_matrix");
+	modelMatloc = glGetUniformLocation(renderingPrograms[0], "model_matrix");
 	viewMatloc = glGetUniformLocation(renderingPrograms[0], "view_matrix");
 
 	mat4 perpMat = camera->getPerspectiveMatrix();
