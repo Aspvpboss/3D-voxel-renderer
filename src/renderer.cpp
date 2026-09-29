@@ -237,11 +237,11 @@ int Renderer::render(const std::unique_ptr<Camera>& camera){
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cubeTex);
 
-	// glEnable(GL_DEPTH_TEST);
-	// glDepthFunc(GL_LEQUAL);
-	// glEnable(GL_CULL_FACE);
-	// glFrontFace(GL_CW);
-	// glCullFace(GL_BACK);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glCullFace(GL_BACK);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	
     return 0;

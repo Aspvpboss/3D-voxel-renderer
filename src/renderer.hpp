@@ -7,7 +7,7 @@
 #include "math.hpp"
 #include "camera.hpp"
 
-#define NUM_VBOS 2
+#define NUM_VBOS 3
 #define NUM_VAOS 20
 #define NUM_RPS 1
 
