@@ -51,7 +51,31 @@ const static float VOXEL_UVS[] = {
     0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,
     1.0f, 0.0f,  0.0f, 0.0f,  0.0f, 1.0f
 };
+const static float VOXEL_NORMALS[] = {
+    // Face 1 (Back) - Pointing towards -Z
+     0.0f,  0.0f, -1.0f,   0.0f,  0.0f, -1.0f,   0.0f,  0.0f, -1.0f,
+     0.0f,  0.0f, -1.0f,   0.0f,  0.0f, -1.0f,   0.0f,  0.0f, -1.0f,
 
+    // Face 2 (Right) - Pointing towards +X
+     1.0f,  0.0f,  0.0f,   1.0f,  0.0f,  0.0f,   1.0f,  0.0f,  0.0f,
+     1.0f,  0.0f,  0.0f,   1.0f,  0.0f,  0.0f,   1.0f,  0.0f,  0.0f,
+
+    // Face 3 (Front) - Pointing towards +Z
+     0.0f,  0.0f,  1.0f,   0.0f,  0.0f,  1.0f,   0.0f,  0.0f,  1.0f,
+     0.0f,  0.0f,  1.0f,   0.0f,  0.0f,  1.0f,   0.0f,  0.0f,  1.0f,
+
+    // Face 4 (Left) - Pointing towards -X
+    -1.0f,  0.0f,  0.0f,  -1.0f,  0.0f,  0.0f,  -1.0f,  0.0f,  0.0f,
+    -1.0f,  0.0f,  0.0f,  -1.0f,  0.0f,  0.0f,  -1.0f,  0.0f,  0.0f,
+
+    // Face 5 (Bottom) - Pointing towards -Y
+     0.0f, -1.0f,  0.0f,   0.0f, -1.0f,  0.0f,   0.0f, -1.0f,  0.0f,
+     0.0f, -1.0f,  0.0f,   0.0f, -1.0f,  0.0f,   0.0f, -1.0f,  0.0f,
+
+    // Face 6 (Top) - Pointing towards +Y
+     0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f,
+     0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f
+};
 
 vec3 cubeLoc(3.0f, -2.0f, -8.0f);
 GLuint cubeTex;
