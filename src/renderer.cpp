@@ -77,10 +77,10 @@ const static float VOXEL_NORMALS[] = {
      0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f,   0.0f,  1.0f,  0.0f
 };
 
-vec3 lightLoc(0.0f, 0.0f, 0.0f);
+vec3 lightLoc(0.0f, 10.0f, 0.0f);
 vec3 lightColor(1.0f, 1.0f, 1.0f);
 vec3 cubeLoc(0.0f, 0.0f, -8.0f);
-vec3 cubeRotation(45.0f, 0.0f, 45.0f);
+vec3 cubeRotation(15.0f, 0.0f, 15.0f);
 GLuint cubeTex;
 
 GLuint loadTexture(const char *textImagePath){
