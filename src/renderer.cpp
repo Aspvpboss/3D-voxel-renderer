@@ -156,6 +156,8 @@ void compileShader(GLuint rendering_program, GLenum shader_type, const char *fil
 Renderer::Renderer(std::vector<std::string> texture_paths, std::vector<Voxel> voxels){
 
 	Renderer::voxels = voxels;
+	Renderer::voxels.push_back(Voxel(lightLoc, vec3(0), LIGHT_TEX));
+
 	renderingPrograms[0] = glCreateProgram();
 	try{
 		compileShader(renderingPrograms[0], GL_FRAGMENT_SHADER, "assets/shaders/frag.glsl");
@@ -239,7 +241,7 @@ int Renderer::render(const std::unique_ptr<Camera>& camera){
 
 	for(Voxel voxel : voxels){
 		int texture_index = voxel.getTextureSelectionIndex();
-		if(texture_index < textures.size()) return 1;
+		if(texture_index >= textures.size() || texture_index < 0) return 1;
 
 		mat4 model_matrix = voxel.getModelMatrix();
 		glUniformMatrix4fv(modelMatloc, 1, GL_FALSE, &model_matrix.data[0]);

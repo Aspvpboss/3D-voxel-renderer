@@ -55,9 +55,13 @@ Program::Program(int width, int height, const char *window_title){
     glDebugMessageCallback(MessageCallback, 0);
 
     std::vector<Voxel> voxels;
-    voxels.push_back(Voxel(vec3(0, 0, 0), vec3(0, 0, 0), 0));
+    voxels.push_back(Voxel(vec3(0, 0, -8), vec3(0, 0, 0), DIRT_TEX));
+    voxels.push_back(Voxel(vec3(2, 0, -8), vec3(0, 0, 0), DIRT_TEX));
+    voxels.push_back(Voxel(vec3(4, 0, -8), vec3(0, 0, 0), DIRT_TEX));
+    voxels.push_back(Voxel(vec3(2, 4, -60), vec3(0, 0, 0), DIRT_TEX));
 
     std::vector<std::string> textures;
+    textures.push_back("assets/textures/sun.png"); 
     textures.push_back("assets/textures/dirt.jpg"); 
 
     try{

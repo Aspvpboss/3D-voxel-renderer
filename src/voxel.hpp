@@ -2,15 +2,20 @@
 
 #include "math.hpp"
 
+enum TextureIndexes{
+    LIGHT_TEX,
+    DIRT_TEX,
+};
+
 class Voxel {
     public:
-        Voxel(vec3 position, vec3 rotation, int texture_select_index);
+        Voxel(vec3 position, vec3 rotation, TextureIndexes texture_select_index);
         mat4 getModelMatrix();
-        int getTextureSelectionIndex();
+        TextureIndexes getTextureSelectionIndex();
 
     private:
         vec3 position;
         vec3 rotation;
-        int texture_select_index;
+        TextureIndexes texture_select_index;
 
 };
