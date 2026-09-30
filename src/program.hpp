@@ -15,7 +15,7 @@ class Program {
         GLFWwindow *window = nullptr;
         std::unique_ptr<Renderer> renderer;
         std::unique_ptr<Camera> camera;
-        Program(int width, int height, const char *window_title);
+        Program(int width, int height, const char *window_title, std::vector<std::string> texture_paths, std::vector<Voxel> voxels);
         ~Program();
         void loop();
 

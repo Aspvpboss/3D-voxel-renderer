@@ -31,7 +31,7 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
 
 
 
-Program::Program(int width, int height, const char *window_title){
+Program::Program(int width, int height, const char *window_title, std::vector<std::string> texture_paths, std::vector<Voxel> voxels){
 
     if(!glfwInit()) 
         throw std::runtime_error("glfw3 failed to initialize");
@@ -44,28 +44,18 @@ Program::Program(int width, int height, const char *window_title){
     glfwSetWindowUserPointer(window, this);
     glfwSetWindowSizeCallback(window, window_reshape_callback);
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(0);
   
     
     if(glewInit() != GLEW_OK) 
         throw std::runtime_error("glew failed to initilize");
     
-    glfwSwapInterval(1);
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); 
     glDebugMessageCallback(MessageCallback, 0);
 
-    std::vector<Voxel> voxels;
-    voxels.push_back(Voxel(vec3(0, 0, -8), vec3(0, 0, 0), DIRT_TEX));
-    voxels.push_back(Voxel(vec3(2, 0, -8), vec3(0, 0, 0), DIRT_TEX));
-    voxels.push_back(Voxel(vec3(4, 0, -8), vec3(0, 0, 0), DIRT_TEX));
-    voxels.push_back(Voxel(vec3(2, 4, -60), vec3(0, 0, 0), DIRT_TEX));
-
-    std::vector<std::string> textures;
-    textures.push_back("assets/textures/sun.png"); 
-    textures.push_back("assets/textures/dirt.jpg"); 
-
     try{
-        renderer = std::make_unique<Renderer>(textures, voxels);
+        renderer = std::make_unique<Renderer>(texture_paths, voxels);
     } catch(const std::exception& e){
         throw;
     }
@@ -89,13 +79,20 @@ Program::~Program(){
 void Program::loop(){
 
     double lastFrame = 0.0;
+    int lastZeroState = GLFW_RELEASE;
     while(!glfwWindowShouldClose(window)){
         double currentFrame = glfwGetTime();
+        int currentZeroState = glfwGetKey(window, GLFW_KEY_0);
         double dt = currentFrame - lastFrame;
         lastFrame = currentFrame;
        
         camera->HandleMovement(dt);
-        if(renderer->render(camera)) throw std::runtime_error("failed to render a frame"); 
+        if(renderer->render(camera)) throw std::runtime_error("failed to render a frame");
+        if(currentZeroState == GLFW_PRESS && lastZeroState == GLFW_RELEASE){
+            std::cout << 1 / dt << std::endl;
+        }
+        lastZeroState = currentZeroState;
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
