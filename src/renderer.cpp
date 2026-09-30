@@ -156,7 +156,7 @@ void compileShader(GLuint rendering_program, GLenum shader_type, const char *fil
 }
 
 
-Renderer::Renderer(){
+Renderer::Renderer(std::vector<std::string> texture_paths, std::vector<Voxel> voxels){
 
 	renderingPrograms[0] = glCreateProgram();
 	try{

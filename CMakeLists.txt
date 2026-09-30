@@ -16,6 +16,7 @@ set(SOURCES
     src/renderer.cpp
     src/math.cpp
     src/camera.cpp
+    src/voxel.cpp
 )
 
 
