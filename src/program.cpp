@@ -54,8 +54,14 @@ Program::Program(int width, int height, const char *window_title){
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); 
     glDebugMessageCallback(MessageCallback, 0);
 
+    std::vector<Voxel> voxels;
+    voxels.push_back(Voxel(vec3(0, 0, 0), vec3(0, 0, 0), 0));
+
+    std::vector<std::string> textures;
+    textures.push_back("assets/textures/dirt.jpg"); 
+
     try{
-        renderer = std::make_unique<Renderer>();
+        renderer = std::make_unique<Renderer>(textures, voxels);
     } catch(const std::exception& e){
         throw;
     }

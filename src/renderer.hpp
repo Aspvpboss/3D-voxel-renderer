@@ -24,6 +24,7 @@ class Renderer {
         int render(const std::unique_ptr<Camera>& camera);
 
     private:
+        std::vector<GLuint> textures;
         std::vector<Voxel> voxels;
         GLuint vbo[NUM_VBOS] = {0};
         GLuint vao[NUM_VAOS] = {0};

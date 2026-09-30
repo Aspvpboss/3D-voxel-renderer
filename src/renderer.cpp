@@ -79,14 +79,11 @@ const static float VOXEL_NORMALS[] = {
 
 vec3 lightLoc(0.0f, 10.0f, 0.0f);
 vec3 lightColor(1.0f, 1.0f, 1.0f);
-vec3 cubeLoc(0.0f, 0.0f, -8.0f);
-vec3 cubeRotation(15.0f, 0.0f, 15.0f);
-GLuint cubeTex;
 
-GLuint loadTexture(const char *textImagePath){
+GLuint loadTexture(std::string textImagePath){
 
 	GLuint textureID;
-	textureID = SOIL_load_OGL_texture(textImagePath, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	textureID = SOIL_load_OGL_texture(textImagePath.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 	if(textureID == 0) throw std::runtime_error(std::format("Tried to open the texture {} but failed", textImagePath));
 	// Bind it once to configure it
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -158,12 +155,15 @@ void compileShader(GLuint rendering_program, GLenum shader_type, const char *fil
 
 Renderer::Renderer(std::vector<std::string> texture_paths, std::vector<Voxel> voxels){
 
+	Renderer::voxels = voxels;
 	renderingPrograms[0] = glCreateProgram();
 	try{
 		compileShader(renderingPrograms[0], GL_FRAGMENT_SHADER, "assets/shaders/frag.glsl");
 		compileShader(renderingPrograms[0], GL_VERTEX_SHADER, "assets/shaders/vertex.glsl");
 		glLinkProgram(renderingPrograms[0]);
-		cubeTex = loadTexture("assets/textures/dirt.jpg");
+		for(std::string file : texture_paths){
+			textures.push_back(loadTexture(file));
+		}
 	}	
 	catch(const std::exception& e){
 		throw;
@@ -223,26 +223,32 @@ int Renderer::render(const std::unique_ptr<Camera>& camera){
 	mat4 perpMat = camera->getPerspectiveMatrix();
 	mat4 viewMat = camera->buildCameraMatrix();
 
-	mat4 modelMat = math::translate(mat4(1.0f), cubeLoc) * math::rotationXYZ(mat4(1.0f), cubeRotation);
 	
 
 	glUniformMatrix4fv(perpMatloc, 1, GL_FALSE, &perpMat.data[0]);
-	glUniformMatrix4fv(modelMatloc, 1, GL_FALSE, &modelMat.data[0]);
 	glUniformMatrix4fv(viewMatloc, 1, GL_FALSE, &viewMat.data[0]);
 	glUniform3fv(lightPosloc, 1, &lightLoc.x);
 	glUniform3fv(lightColorloc, 1, &lightColor.x);
-	
 	glBindVertexArray(vao[0]);
-	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, cubeTex);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	for(Voxel voxel : voxels){
+		int texture_index = voxel.getTextureSelectionIndex();
+		if(texture_index < textures.size()) return 1;
+
+		mat4 model_matrix = voxel.getModelMatrix();
+		glUniformMatrix4fv(modelMatloc, 1, GL_FALSE, &model_matrix.data[0]);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textures[texture_index]);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	}
 	
     return 0;
 }
